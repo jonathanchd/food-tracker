@@ -28,6 +28,7 @@ int main(){
         string command; cin >> command;
         if (commands.find(command) == commands.end()){
             cout << "Please enter in a valid command. Type 'help' to view commands\n";
+            continue;
         }
     }
     return 0;
