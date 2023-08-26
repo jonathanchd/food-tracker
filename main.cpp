@@ -5,21 +5,8 @@
 #include <vector>
 using namespace std;
 
-unordered_map<string, void(*)(void)> commands;
+unordered_map<string, void(*)(void)> commands; //lolz sorry global variable
 
-void help(){
-    cout << "all commands: \n";
-    for (auto i : commands){
-        cout << i.first << "\n";
-    }
-    cout << endl;
-}
-void add(){
-    cout << "add" << endl;
-}
-void view(){
-    cout << "view" << endl;
-}
 void fillCommands(){
     void (*functptr[])() = {help, add, view};
     string commandsFile = "commands.txt";
@@ -34,12 +21,32 @@ void fillCommands(){
     }
 }
 
+void toLower(string& s){
+    transform(s.begin(), s.end(), s.begin(), [](unsigned char c){return tolower(c);});
+}
+
+void help(){
+    cout << "All commands: \n";
+    for (auto i : commands){
+        cout << i.first << "\n";
+    }
+    cout << endl;
+}
+
+void add(){
+    cout << "add" << endl;
+}
+
+void view(){
+    cout << "view" << endl;
+}
+
 int main(){
     fillCommands();
     while (true){
         cout << "Enter command:\n";
         string command; cin >> command;
-        transform(command.begin(), command.end(), command.begin(), [](unsigned char c){return tolower(c);});
+        toLower(command);
         cout << endl;
         if (!command.compare("exit")){
             cout << "Quit program\n\n";
