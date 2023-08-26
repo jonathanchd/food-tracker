@@ -5,10 +5,18 @@
 #include <vector>
 using namespace std;
 
+void fillCommands();
+bool fileExists();
+void toLower(string& s);
+void help();
+void add();
+void readFile(string file);
+void view();
+
 unordered_map<string, void(*)(void)> commands; //lolz sorry global variable
 
 void fillCommands(){
-    void (*functptr[])() = {help, add, view};
+    void (*functptr[])() = {&help, &add, &view};
     string commandsFile = "commands.txt";
     ifstream fin(commandsFile);
     int ctr = 0;
@@ -19,6 +27,10 @@ void fillCommands(){
         }
         commands[s] = functptr[ctr++];
     }
+}
+
+bool fileExists(string file){
+    return filesystem::exists(file);
 }
 
 void toLower(string& s){
@@ -34,11 +46,38 @@ void help(){
 }
 
 void add(){
-    cout << "add" << endl;
+    cout << "add\n\n";
+}
+
+void readFile(string file){
+    ifstream fin(file);
+    while (true){
+        string s; fin >> s;
+        cout << s << "\n";
+        if (fin.eof()){
+            break;
+        }
+    }
+    cout << endl;
 }
 
 void view(){
-    cout << "view" << endl;
+    while (true){
+        cout << "Enter date (mmddyyyy)" << endl;
+        string date; cin >> date;
+        toLower(date);
+        if (!date.compare("exit")){
+            break;
+        }
+        string file = "data/"+ date + ".txt";
+        if (fileExists(file)){
+            cout << "valid\n\n";
+            readFile(file);
+        }
+        else{
+            cout << "file does not exist\n\n";
+        }
+    }
 }
 
 int main(){
