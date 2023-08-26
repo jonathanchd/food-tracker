@@ -66,7 +66,7 @@ void view(){
         cout << "Enter date (mmddyyyy)" << endl;
         string date; cin >> date;
         toLower(date);
-        if (!date.compare("exit")){
+        if (!date.compare("exit") || !date.compare("quit")){
             break;
         }
         string file = "data/"+ date + ".txt";
@@ -87,7 +87,7 @@ int main(){
         string command; cin >> command;
         toLower(command);
         cout << endl;
-        if (!command.compare("exit")){
+        if (!command.compare("exit") || !command.compare("quit")){
             cout << "Quit program\n\n";
             break;
         }
