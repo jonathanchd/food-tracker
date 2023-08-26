@@ -1,3 +1,4 @@
-help
-view
+help 
 add
+view
+exit

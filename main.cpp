@@ -5,31 +5,51 @@
 #include <vector>
 using namespace std;
 
+unordered_map<string, void(*)(void)> commands;
 
-void fillCommands(unordered_set<string>& commands){
+void help(){
+    cout << "all commands: \n";
+    for (auto i : commands){
+        cout << i.first << "\n";
+    }
+    cout << endl;
+}
+void add(){
+    cout << "add" << endl;
+}
+void view(){
+    cout << "view" << endl;
+}
+void fillCommands(){
+    void (*functptr[])() = {help, add, view};
     string commandsFile = "commands.txt";
     ifstream fin(commandsFile);
+    int ctr = 0;
     while (true){
         string s; fin >> s;
         if (fin.eof()){
             break;
         }
-        commands.insert(s);
+        commands[s] = functptr[ctr++];
     }
 }
 
-
-
 int main(){
-    unordered_set<string> commands;
-    fillCommands(commands);
+    fillCommands();
     while (true){
         cout << "Enter command:\n";
         string command; cin >> command;
-        if (commands.find(command) == commands.end()){
-            cout << "Please enter in a valid command. Type 'help' to view commands\n";
+        transform(command.begin(), command.end(), command.begin(), [](unsigned char c){return tolower(c);});
+        cout << endl;
+        if (!command.compare("exit")){
+            cout << "Quit program\n\n";
+            break;
+        }
+        if (!commands.count(command)){
+            cout << "Please enter in a valid command. Type 'help' to view commands\n\n";
             continue;
         }
+        commands[command]();
     }
     return 0;
 }
