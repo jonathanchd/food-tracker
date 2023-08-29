@@ -5,8 +5,9 @@
 #include <vector>
 using namespace std;
 
+void quit();
 void fillCommands();
-bool fileExists();
+bool fileExists(string file);
 void toLower(string& s);
 void help();
 void add();
@@ -15,6 +16,10 @@ void view();
 
 unordered_map<string, void(*)(void)> commands; //lolz sorry global variable
 
+void quit(){
+    return;
+}
+
 void fillCommands(){
     void (*functptr[])() = {&help, &add, &view};
     string commandsFile = "commands.txt";
@@ -22,10 +27,10 @@ void fillCommands(){
     int ctr = 0;
     while (true){
         string s; fin >> s;
+        commands[s] = functptr[ctr++];
         if (fin.eof()){
             break;
         }
-        commands[s] = functptr[ctr++];
     }
 }
 
@@ -51,6 +56,15 @@ void add(){
 
 void readFile(string file){
     ifstream fin(file);
+    string dates[3];
+    dates[0] = file.substr(5, 2) + "/";
+    dates[1] = file.substr(7, 2) + "/";
+    dates[2] = file.substr(9, 4);
+    cout << "Reading from ";
+    for (int i = 0; i < 3; ++i){
+        cout << dates[i];
+    }
+    cout << "\n";
     while (true){
         string s; fin >> s;
         cout << s << "\n";
