@@ -10,6 +10,7 @@ void fillCommands();
 bool fileExists(string file);
 void toLower(string& s);
 void help();
+string prompt(string ques);
 void add();
 void readFile(string file);
 void view();
@@ -50,10 +51,31 @@ void help(){
     cout << endl;
 }
 
-void add(){
-    cout << "add\n\n";
+string prompt(string ques){
+    cout << ques << "\n";
+    string ret; cin >> ret;
+    return ret;
 }
 
+void add(){
+    while (true){
+        cout << "Enter date (mmddyyyy)" << endl;
+        string date; cin >> date;
+        toLower(date);
+        if (!date.compare("exit") || !date.compare("quit")){
+            break;
+        }
+        string file = "data/"+ date + ".txt";
+        if (fileExists(file)){
+            cout << "append\n";
+        }
+        else{
+            cout << "new file\n";
+        }
+    }
+    cout << endl;
+}
+//UPDATE GITHUB WHEN U CAN
 void readFile(string file){
     ifstream fin(file);
     string dates[3];
