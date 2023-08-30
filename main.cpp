@@ -75,7 +75,7 @@ void add(){
     }
     cout << endl;
 }
-//UPDATE GITHUB WHEN U CAN
+
 void readFile(string file){
     ifstream fin(file);
     string dates[3];
