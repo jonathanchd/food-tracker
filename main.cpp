@@ -5,6 +5,12 @@
 #include <vector>
 using namespace std;
 
+struct food{
+    string name, calories, fats, carbs, protein;
+};
+
+typedef struct food food;
+
 void quit();
 void fillCommands();
 bool fileExists(string file);
@@ -16,6 +22,7 @@ void readFile(string file);
 void view();
 
 unordered_map<string, void(*)(void)> commands; //lolz sorry global variable
+unordered_map<string, food> foods;
 
 void quit(){
     return;
@@ -52,8 +59,48 @@ void help(){
 }
 
 string prompt(string ques){
-    cout << ques << "\n";
+    cout << ques;
     string ret; cin >> ret;
+    return ret;
+}
+
+void loadFoods(){
+    ifstream fin("foods.txt");
+    string s;
+    for (int i = 0; i < 5; ++i){
+        fin >> s;
+    }
+    while (true){
+        string name; fin >> name;
+        if (fin.eof()){
+            break;
+        }
+        string calories, fats, carbs, protein;
+        fin >> calories >> fats >> carbs >> protein;
+        food f = {name, calories, fats, carbs, protein};
+        foods[name] = f;
+    }
+}
+
+void addFood(food f){
+    ofstream fout;
+    fout.open("foods.txt", ios_base::app);
+    fout << endl << f.name << " " << f.calories << " " << f.fats << " " << f.carbs << " " << f.protein << endl;
+}
+
+//name, calories, fats, carbs, protein
+food getFoodInfo(){
+    string name = prompt("Enter food name\n");
+    if (foods.count(name)){
+        return foods[name];
+    }
+    string calories = prompt("Enter calories\n");
+    string fats = prompt("Enter fats\n");
+    string carbs = prompt("Enter carbs\n");
+    string protein = prompt("Enter protein\n");
+    food ret = {name, calories, fats, carbs, protein};
+    foods[name] = ret;
+    addFood(ret);
     return ret;
 }
 
@@ -66,11 +113,22 @@ void add(){
             break;
         }
         string file = "data/"+ date + ".txt";
+        ofstream fout;
         if (fileExists(file)){
             cout << "append\n";
         }
         else{
             cout << "new file\n";
+        }
+        
+        while (true){
+            cout << "Enter new food? (Y/N)\n";
+            string s; cin >> s;
+            if (!s.compare("N") || !s.compare("n")){
+                break;
+            }
+            food f = getFoodInfo();
+            cout << f.name << " " << f.calories << " " << f.fats << " " << f.carbs << " " << f.protein << endl;
         }
     }
     cout << endl;
@@ -118,6 +176,7 @@ void view(){
 
 int main(){
     fillCommands();
+    loadFoods();
     while (true){
         cout << "Enter command:\n";
         string command; cin >> command;
