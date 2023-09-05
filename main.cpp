@@ -15,12 +15,10 @@ typedef struct food food;
 void quit();
 void fillCommands();
 void help();
-
 void loadFoods();
 void addFood(food f);
 food getFoodInfo();
 void add();
-
 void view();
 
 unordered_map<string, void(*)(void)> commands; //lolz sorry global variable
@@ -31,16 +29,10 @@ void quit(){
 }
 
 void fillCommands(){
-    void (*functptr[])() = {&help, &add, &view};
-    string commandsFile = "commands.txt";
-    ifstream fin(commandsFile);
-    int ctr = 0;
-    while (true){
-        string s; fin >> s;
-        commands[s] = functptr[ctr++];
-        if (fin.eof()){
-            break;
-        }
+    void (*functptr[])() = {&help, &add, &view, &quit};
+    string cmds[4] = {"help", "add", "view", "quit"};
+    for (int i = 0; i < 4; ++i){
+        commands[cmds[i]] = functptr[i];
     }
 }
 
