@@ -36,7 +36,6 @@ void fillCommands(){
     }
 }
 
-
 void help(){
     cout << "All commands: \n";
     for (auto i : commands){
@@ -114,8 +113,6 @@ void add(){
     }
     cout << endl;
 }
-
-
 
 void view(){
     while (true){
