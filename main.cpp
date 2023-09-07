@@ -7,7 +7,10 @@
 using namespace std;
 
 struct food{
-    string name, calories, fats, carbs, protein;
+    string name, calories, fats, carbs, protein, sodium, sugar;
+    string format(){
+        return name + " " + calories + " " + fats + " " + carbs + " " + protein + " " + sodium + " " + sugar + "\n";
+    }
 };
 
 typedef struct food food;
@@ -55,9 +58,9 @@ void loadFoods(){
         if (fin.eof()){
             break;
         }
-        string calories, fats, carbs, protein;
-        fin >> calories >> fats >> carbs >> protein;
-        food f = {name, calories, fats, carbs, protein};
+        string calories, fats, carbs, protein, sodium, sugar;
+        fin >> calories >> fats >> carbs >> protein >> sodium >> sugar;
+        food f = {name, calories, fats, carbs, protein, sodium, sugar};
         foods[name] = f;
     }
 }
@@ -65,7 +68,7 @@ void loadFoods(){
 void addFood(food f){
     ofstream fout;
     fout.open("foods.txt", ios_base::app);
-    fout << f.name << " " << f.calories << " " << f.fats << " " << f.carbs << " " << f.protein << endl;
+    fout << f.format();
 }
 
 //name, calories, fats, carbs, protein
@@ -78,10 +81,25 @@ food getFoodInfo(){
     string fats = prompt("Enter fats\n");
     string carbs = prompt("Enter carbs\n");
     string protein = prompt("Enter protein\n");
-    food ret = {name, calories, fats, carbs, protein};
+    string sodium = prompt("Enter sodium\n");
+    string sugar = prompt("Enter sugar\n");
+    food ret = {name, calories, fats, carbs, protein, sodium, sugar};
+    toLower(ret.name);
     foods[name] = ret;
     addFood(ret);
     return ret;
+}
+
+void writeToFile(string file, bool append, food f){
+    ofstream fout;
+    if (append){
+        fout.open(file, ios_base::app);
+    }
+    else{
+        fout.open(file);
+        fout << "name calories fats carbs protein sodium sugar\n";
+    }
+    fout << f.format();
 }
 
 void add(){
@@ -94,13 +112,7 @@ void add(){
         }
         string file = "data/"+ date + ".txt";
         ofstream fout;
-        if (fileExists(file)){
-            cout << "append\n";
-        }
-        else{
-            cout << "new file\n";
-        }
-        
+        bool append = fileExists(file);
         while (true){
             cout << "Enter new food? (Y/N)\n";
             string s; cin >> s;
@@ -108,7 +120,7 @@ void add(){
                 break;
             }
             food f = getFoodInfo();
-            cout << f.name << " " << f.calories << " " << f.fats << " " << f.carbs << " " << f.protein << endl;
+            writeToFile(file, append, f);
         }
     }
     cout << endl;
@@ -124,7 +136,6 @@ void view(){
         }
         string file = "data/"+ date + ".txt";
         if (fileExists(file)){
-            cout << "valid\n\n";
             readFile(file);
         }
         else{

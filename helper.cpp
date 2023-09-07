@@ -31,11 +31,14 @@ void readFile(string file){
         cout << dates[i];
     }
     cout << "\n";
-    while (true){
+    int counter = 0;
+    while (!fin.eof()){
         string s; fin >> s;
-        cout << s << "\n";
-        if (fin.eof()){
-            break;
+        cout << s + " ";
+        ++counter;
+        if (counter == 7){
+            counter = 0;
+            cout << endl;
         }
     }
     cout << endl;
