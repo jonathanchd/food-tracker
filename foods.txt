@@ -1,3 +1,8 @@
 name calories fats carbs protein
 mac_and_cheese 190 10 18 8 543 3
 smores_protein 210 7 25 20 160 1
+salad 250 idk idk idk idk idk
+french_onion_soup 54 1 9 1 362 4
+monterey_chicken_breast 201 10 4 23 480 2
+corn_pudding 137 4 24 2 288 11
+roasted_zucchini 53 4 5 2 64 4
